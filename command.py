@@ -11,7 +11,9 @@ class Command:
         self.help()
 
     def needHelp(self, p):
-        return len(p.options) == 1 and p.options[0] == 'help' and len(p.targets) == 0
+        return len(p.options) == 1 and \
+               p.options[0] == 'help' and \
+               len(p.targets) == 0
 
     def execute(self, argv):
         try:
