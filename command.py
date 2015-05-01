@@ -1,16 +1,12 @@
-from params import Params
-from exception import WrongOptions
-from exception import WrongTargets
+from platform.params import Params
+from platform.exception import WrongOptions, WrongTargets
 
 
 class Command:
     def error(self, message):
-        def printLine():
-            print('-----------------------------------------------------')
-
         print(message)
         print('\n')
-        printLine()
+        print('-----------------------------------------------------')
         print('\n')
         self.help()
 

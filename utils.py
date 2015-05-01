@@ -10,7 +10,10 @@ def importCommands(path):
     for name in glob(commandsPath + '/*.py'):
         module = __import__(basename(name[:-3]), globals(), locals())
 
-        for command in module.module_commands.keys():
-            commands[command] = module.module_commands[command]
+        try:
+            for command in module.module_commands.keys():
+                commands[command] = module.module_commands[command]
+        except AttributeError:
+            pass
 
     return commands
