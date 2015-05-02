@@ -3,3 +3,6 @@ class WrongOptions(Exception):
 
 class WrongTargets(Exception):
     pass
+
+class WrongDelimers(Exception):
+    pass

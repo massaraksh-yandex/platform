@@ -1,25 +1,39 @@
-class Params:
-    targets = []
-    options = []
-    argv = []
-    delimer = []
-    doubleDelimer = []
+from platform.delimer import DoubleDelimer, SingleDelimer
 
-    def __init__(self, argv):
-        self.argv = argv
+class Params:
+    argv = None
+    delimer = None
+    targets = None
+    options = None
+    def __init__(self):
+        self.argv = []
+        self.delimer = []
         self.targets = []
         self.options = []
-        self.delimer = []
-        self.doubleDelimer = []
 
-        index = 0
-        for arg in argv:
-            if arg.startswith('--') and arg != '--':
-                self.options.append(arg[2:])
+def makeParams(args) -> Params:
+    def checkDobuleDelimer(arg):
+        return arg == '--'
+
+    def checkSingleDelimer(arg):
+        return arg == '-'
+
+    def isOption(arg):
+        return arg.startswith('--') and arg != '--'
+
+    p = Params()
+    p.argv = args
+    passedTargets = 0
+    for arg in args:
+        if isOption(arg):
+            p.options.append(arg)
+        else:
+            if checkDobuleDelimer(arg):
+
+                p.delimer.append(DoubleDelimer(passedTargets))
+            elif checkSingleDelimer(arg):
+                p.delimer.append(SingleDelimer(passedTargets))
             else:
-                if arg == '-':  # -
-                    self.delimer.append(index)
-                elif arg == '--':
-                    self.doubleDelimer.append(index)
-                self.targets.append(arg)  # target
-            index += 1
+                p.targets.append(arg)
+            passedTargets += 1
+    return p

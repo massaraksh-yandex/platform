@@ -1,4 +1,4 @@
-from platform.params import Params
+from platform.params import makeParams
 from platform.exception import WrongOptions, WrongTargets
 
 
@@ -17,7 +17,7 @@ class Command:
 
     def execute(self, argv):
         try:
-            p = Params(argv)
+            p = makeParams(argv)
 
             if self.needHelp(p):
                 self.help()
