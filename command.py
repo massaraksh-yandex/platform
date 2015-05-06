@@ -8,6 +8,15 @@ class Command:
     def __init__(self, parent):
         self.parent = parent
 
+    def chain(self):
+        ret = [self.name()]
+        if self.parent is not None:
+            ret = self.parent.chain() + ret
+        return ret
+
+    def path(self):
+        return ' '.join(self.chain())
+
     def error(self, message):
         print(message)
         print('\n')
