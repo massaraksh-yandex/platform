@@ -3,6 +3,11 @@ from platform.exception import WrongOptions, WrongTargets
 
 
 class Command:
+    parent = None
+
+    def __init__(self, parent):
+        self.parent = parent
+
     def error(self, message):
         print(message)
         print('\n')
