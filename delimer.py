@@ -1,8 +1,5 @@
 from platform.exception import WrongDelimers
 
-__author__ = 'massaraksh'
-
-
 class Delimer:
     index = 0
     def __init__(self, index):

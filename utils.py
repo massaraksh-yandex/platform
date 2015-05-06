@@ -1,5 +1,6 @@
 from os.path import join, basename
 from glob import glob
+import codecs
 import sys
 
 
@@ -17,3 +18,7 @@ def importCommands(path):
             pass
 
     return commands
+
+def setupCodecs():
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+    sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')

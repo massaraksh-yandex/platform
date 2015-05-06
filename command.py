@@ -1,4 +1,4 @@
-from platform.params import makeParams
+from platform.params import makeParams, Params
 from platform.exception import WrongOptions, WrongTargets
 
 
@@ -10,10 +10,8 @@ class Command:
         print('\n')
         self.help()
 
-    def needHelp(self, p):
-        return len(p.options) == 1 and \
-               p.options[0] == 'help' and \
-               len(p.targets) == 0
+    def needHelp(self, p: Params):
+        return p.showHelp
 
     def execute(self, argv):
         try:

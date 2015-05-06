@@ -5,6 +5,7 @@ class Params:
     delimer = None
     targets = None
     options = None
+    showHelp = False
     def __init__(self):
         self.argv = []
         self.delimer = []
@@ -26,10 +27,13 @@ def makeParams(args) -> Params:
     passedTargets = 0
     for arg in args:
         if isOption(arg):
-            p.options.append(arg)
+            opt = arg[2:]
+            if opt == 'help':
+                p.showHelp = True
+            else:
+                p.options.append(opt)
         else:
             if checkDobuleDelimer(arg):
-
                 p.delimer.append(DoubleDelimer(passedTargets))
             elif checkSingleDelimer(arg):
                 p.delimer.append(SingleDelimer(passedTargets))
