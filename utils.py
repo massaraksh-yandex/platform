@@ -19,6 +19,11 @@ def importCommands(path):
 
     return commands
 
+
+def makeCommandDict(commands):
+    return { c.name(c): c for c in commands }
+
+
 def setupCodecs():
     sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
     sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
