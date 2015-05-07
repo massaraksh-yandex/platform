@@ -5,7 +5,9 @@ class Params:
     delimer = None
     targets = None
     options = None
-    showHelp = False
+
+    _helpOptionIndex = None
+
     def __init__(self):
         self.argv = []
         self.delimer = []
@@ -25,11 +27,12 @@ def makeParams(args) -> Params:
     p = Params()
     p.argv = args
     passedTargets = 0
+    iter = 0
     for arg in args:
         if isOption(arg):
             opt = arg[2:]
             if opt == 'help':
-                p.showHelp = True
+                p._helpOptionIndex = iter
             else:
                 p.options.append(opt)
         else:
@@ -40,4 +43,5 @@ def makeParams(args) -> Params:
             else:
                 p.targets.append(arg)
             passedTargets += 1
+        iter += 1
     return p
