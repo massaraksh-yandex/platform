@@ -22,7 +22,7 @@ class Command:
         print('\n')
         print('-----------------------------------------------------')
         print('\n')
-        self.help()
+        self.__help()
 
     def needHelp(self, p: Params):
         return p.showHelp
@@ -32,10 +32,10 @@ class Command:
             p = makeParams(argv)
 
             if self.needHelp(p):
-                self.help()
+                self.__help()
             else:
-                self.check(p)
-                self.process(p)
+                self.__check(p)
+                self.__process(p)
         except WrongOptions as e:
             self.error(e)
 
@@ -44,3 +44,16 @@ class Command:
 
         except Exception:
             raise
+
+    def name(self):
+        return 'Not implemented'
+
+    def __help(self):
+        pass
+
+    def __check(self, p: Params):
+        return False
+
+    def __process(self, p: Params):
+        pass
+
