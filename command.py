@@ -46,8 +46,6 @@ class Command:
             self._error(e)
         except KeyError as e:
             self._error(e)
-        except Exception:
-            raise
 
     def path(self):
         return ' '.join(self._chain())
@@ -64,6 +62,7 @@ class Command:
     def _process(self, p: Params):
         raise NotImplementedError('_process() -> void is not implemented')
 
+
 class Endpoint(Command):
     def __init__(self, parent):
         super().__init__(parent)
@@ -78,5 +77,3 @@ class Endpoint(Command):
             self._error(e)
         except WrongTargets as e:
             self._error(e)
-        except Exception:
-            raise
