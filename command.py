@@ -21,8 +21,6 @@ class Command:
     def _error(self, message):
         print(message)
         print('\n')
-        print('-----------------------------------------------------')
-        print('\n')
         self._printHelp(self._help())
 
     def _needHelp(self, p: Params):
