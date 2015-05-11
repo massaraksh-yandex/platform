@@ -1,4 +1,6 @@
 from platform.delimer import DoubleDelimer, SingleDelimer
+from platform.exception import WrongOptions
+
 
 class Params:
     argv = None
@@ -12,7 +14,7 @@ class Params:
         self.argv = []
         self.delimer = []
         self.targets = []
-        self.options = []
+        self.options = {}
 
 def makeParams(args) -> Params:
     def checkDobuleDelimer(arg):
@@ -24,6 +26,12 @@ def makeParams(args) -> Params:
     def isOption(arg):
         return arg.startswith('--') and arg != '--'
 
+    def parseOption(arg):
+        ind = arg.find('=')
+        if ind == -1:
+            return (arg[2:], '')
+        return (arg[2:ind], arg[ind:])
+
     p = Params()
     p.argv = args
     passedTargets = 0
@@ -34,7 +42,10 @@ def makeParams(args) -> Params:
             if opt == 'help':
                 p._helpOptionIndex = iter
             else:
-                p.options.append(opt)
+                k, v = parseOption(arg)
+                if k in p.options:
+                    raise WrongOptions('Дублирующаяся опция: {0}'.format(k))
+                p.options[k] = v
         else:
             if checkDobuleDelimer(arg):
                 p.delimer.append(DoubleDelimer(passedTargets))
