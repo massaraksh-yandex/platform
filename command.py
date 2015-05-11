@@ -1,5 +1,5 @@
 from platform.params import makeParams, Params
-from platform.exception import WrongOptions, WrongTargets
+from platform.exception import WrongOptions, WrongTargets, WrongDelimers
 
 
 class Command:
@@ -42,6 +42,8 @@ class Command:
             self._error(e)
         except WrongTargets as e:
             self._error(e)
+        except WrongDelimers as e:
+            self._error(e)
         except KeyError as e:
             self._error(e)
 
@@ -74,4 +76,6 @@ class Endpoint(Command):
         except WrongOptions as e:
             self._error(e)
         except WrongTargets as e:
+            self._error(e)
+        except WrongDelimers as e:
             self._error(e)
