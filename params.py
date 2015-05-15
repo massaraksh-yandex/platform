@@ -27,10 +27,14 @@ def makeParams(args) -> Params:
         return arg.startswith('--') and arg != '--'
 
     def parseOption(arg):
-        ind = arg.find('=')
-        if ind == -1:
-            return (arg[2:], '')
-        return (arg[2:ind], arg[ind:])
+        opt = arg[2:].split('=', 1)
+        if len(opt) == 1:
+            return (opt[0], None)
+
+        if opt[1].startswith('\'') and opt[1].endswith('\''):
+            opt[1] = opt[1][1:-1]
+
+        return (opt[0], opt[1])
 
     p = Params()
     p.argv = args
