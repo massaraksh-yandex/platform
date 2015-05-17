@@ -23,13 +23,7 @@ class Params:
 
         def parseOption(arg):
             opt = arg[2:].split('=', 1)
-            if len(opt) == 1:
-                return (opt[0], None)
-
-            if opt[1].startswith('\'') and opt[1].endswith('\''):
-                opt[1] = opt[1][1:-1]
-
-            return (opt[0], opt[1])
+            return (opt[0], None if len(opt) == 1 else opt[1])
 
         p = Params()
         p.argv = args
