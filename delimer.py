@@ -1,7 +1,6 @@
 from platform.exception import WrongDelimers
 
 class Delimer:
-    index = 0
     def __init__(self, index):
         self.index = index
 
@@ -14,8 +13,3 @@ class DoubleDelimer(Delimer):
 class SingleDelimer(Delimer):
     def __init__(self, index):
         super().__init__(index)
-
-
-def checkNoDelimers(p):
-    if len(p.delimer) > 0:
-        raise WrongDelimers('Разделители не допускаются')

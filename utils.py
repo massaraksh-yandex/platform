@@ -27,3 +27,15 @@ def makeCommandDict(commands):
 def setupCodecs():
     sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
     sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
+
+def recieverOptions(map):
+    def raiseWrongParsing():
+        raise ValueError('Ошибочное условие')
+
+    def inArray(arr, el, message = None):
+        if el not in arr:
+            m = 'Отсутсвует элемент {0}, получено {1}'.format(el, str(arr))
+            raise ValueError(m if message is None else message)
+        return True
+
+    return [lambda p: p.argv[0] if inArray(map, p.argv[0]) else raiseWrongParsing()]
