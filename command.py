@@ -25,9 +25,13 @@ class Command(metaclass=ABCMeta):
             except Exception:
                 pass
 
-        if len(rets) == 1:
+        l = len(rets)
+        if l == 1:
             return rets.pop()
-        raise WrongTargets('Аргументы подходят под несколько правил программы')
+        elif l == 0:
+            raise WrongTargets('Аргументы не подходят ни под одно правило')
+        else:
+            raise WrongTargets('Аргументы подходят под несколько правил программы')
 
     def _needHelp(self, p: Params):
         return p._helpOptionIndex is not None and \
