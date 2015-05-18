@@ -10,7 +10,7 @@ class Command(metaclass=ABCMeta):
 
     def _printHelp(self, helpStrings):
         for s in helpStrings:
-            print(s.format(path=self.path(), name=self.name()))
+            print(s.format(path=self.path(), name=self.name(), space='\t'))
 
     def _error(self, message):
         print(message)
