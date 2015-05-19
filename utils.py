@@ -2,7 +2,7 @@ from os.path import join, basename
 from glob import glob
 import codecs
 import sys
-
+import io
 
 def importCommands(path):
     commandsPath = join(path, 'commands')
