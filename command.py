@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from platform.color import colored, Color, Style
 from platform.params import Params
 from platform.exception import WrongOptions, WrongTargets, WrongDelimers
 from platform.utils import recieverOptions
@@ -9,12 +10,15 @@ class Command(metaclass=ABCMeta):
         self.parent = parent
 
     def _printHelp(self, helpStrings):
+        map = dict(path=colored(self.path(), Color.green, Style.underline),
+                   name=self.name(),
+                   space='\t')
+
         for s in helpStrings:
-            print(s.format(path=self.path(), name=self.name(), space='\t'))
+            print(s.format(**map))
 
     def _error(self, message):
-        print(message)
-        print('\n')
+        print(colored(str(message), Color.red))
         self._printHelp(self._help())
 
     def _checkRules(self, p: Params):
@@ -75,7 +79,7 @@ class Command(metaclass=ABCMeta):
         pass
 
     def _help(self):
-        return [pr(self).path() for k, pr in self._commands().items()]
+        return ['{path} '+pr(self).name() for k, pr in self._commands().items()]
 
     def _rules(self):
         return recieverOptions(self._commands())

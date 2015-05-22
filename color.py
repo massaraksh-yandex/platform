@@ -5,7 +5,7 @@ class Color(Enum):
     red = 31
     green = 32
     yellow = 33
-    blu= 34
+    blue= 34
     violent = 35
     cyan = 36
     white = 37
@@ -13,7 +13,7 @@ class Color(Enum):
 class Style(Enum):
     normal = 0
     bold = 1
-    underline = 3
+    underline = 4
 
 def start(c: Color, s: Style = Style.normal):
     return '\033[{style};{color}m'.format(style=s.value, color=c.value)
