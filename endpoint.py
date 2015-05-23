@@ -34,3 +34,7 @@ class Endpoint(Command):
     @abstractmethod
     def _rules(self) -> bool:
         pass
+
+    @abstractmethod
+    def name(self) -> '':
+        pass
