@@ -81,7 +81,7 @@ class Command(metaclass=ABCMeta):
     def _help(self):
         return ['{path} '+pr(self).name() for k, pr in self._commands().items()]
 
-    def _rules(self):
+    def _rules(self) -> []:
         return recieverOptions(self._commands())
 
     def _process(self, p: Params, res):
