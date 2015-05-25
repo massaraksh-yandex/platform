@@ -20,7 +20,7 @@ def importCommands(path):
     return commands
 
 
-def makeCommandDict(commands):
+def makeCommandDict(*commands):
     return { c.name(c): c for c in commands }
 
 
