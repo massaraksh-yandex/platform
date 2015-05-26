@@ -33,7 +33,11 @@ class Command(metaclass=ABCMeta):
         if l == 1:
             return rets.pop()
         elif l == 0:
-            raise WrongTargets('Аргументы не подходят ни под одно правило')
+            if len(p.argv):
+                message = 'Аргументы не подходят ни под одно правило'
+            else:
+                message = ''
+            raise WrongTargets(message)
         else:
             raise WrongTargets('Аргументы подходят под несколько правил программы')
 
