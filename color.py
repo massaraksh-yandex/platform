@@ -38,11 +38,18 @@ class ColorRule:
 
     def apply(self, str):
         def transform(s, ind, c: Color, st: Style):
-            return s[:ind[0]] + start(c, st) + s[ind[0]:ind[1]]  + end() + s[ind[1]:]
+            first = s[:ind[0]] + start(c, st) + s[ind[0]:ind[1]]  + end()
+            string = first + s[ind[1]:]
+            return (string, len(first))
 
-        for s in self.regex.finditer(str):
-            str = transform(str, s.span(), self.color, self.style)
-            break
+        i = 0
+        while True:
+            span = self.regex.search(str, i)
+            if span is None:
+                break
+            ind = span.span()
+            str, i = transform(str, ind, self.color, self.style)
+
         return str
 
 
