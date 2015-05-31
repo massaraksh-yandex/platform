@@ -65,14 +65,14 @@ class Command(metaclass=ABCMeta):
         except KeyError as e:
             self._error(e)
 
-    def path(self):
+    def path(self, separator = ' '):
         def chain(s):
             ret = [s.name()]
             if s.parent is not None:
                 ret = chain(s.parent) + ret
             return ret
 
-        return ' '.join(chain(self))
+        return separator.join(chain(self))
 
     @abstractmethod
     def name(self) -> '':
