@@ -2,6 +2,7 @@ from os.path import join, basename
 from glob import glob
 import sys
 import io
+from platform.config import Config
 
 
 def importCommands(path):
@@ -22,6 +23,11 @@ def importCommands(path):
 
 def makeCommandDict(*commands):
     return { c.name(c): c for c in commands }
+
+
+def main(configInstance):
+    Config.instance = configInstance
+    setupCodecs()
 
 
 def setupCodecs():
