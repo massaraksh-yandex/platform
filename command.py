@@ -3,7 +3,7 @@ from platform.color import colored, Color, Style
 from platform.params import Params
 from platform.exception import WrongOptions, WrongTargets, WrongDelimers
 from platform.utils import recieverOptions
-
+from platform.config import Config
 
 class Command(metaclass=ABCMeta):
     def __init__(self, parent):
@@ -46,6 +46,7 @@ class Command(metaclass=ABCMeta):
                p._helpOptionIndex == 0
 
     def _execute(self, argv):
+        self._commandparams = Config.instance.commandparams(self.path('.'))
         p = Params.make(argv)
         if self._needHelp(p):
             self._printHelp(self._help())
@@ -65,7 +66,7 @@ class Command(metaclass=ABCMeta):
         except KeyError as e:
             self._error(e)
 
-    def path(self, separator = ' '):
+    def path(self, separator = ' ') -> str:
         def chain(s):
             ret = [s.name()]
             if s.parent is not None:

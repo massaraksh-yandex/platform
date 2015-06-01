@@ -13,9 +13,10 @@ class Config:
         with open(Settings().CONFIG_FILE, 'w') as f:
             json.dump(self.params, f, indent=4, sort_keys=True)
 
-    @property
-    def commandparams(self, path) -> {}:
-        for param, value in self.params['commandparams'].items():
-            if path.find(param) != -1:
-                return value
+    def commandparams(self, p) -> {}:
+        # for param, value in self.params['commandparams'].items():
+        #     if path.find(param) != -1:
+        #         return value
         return {}
+
+    instance = None

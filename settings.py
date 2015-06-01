@@ -12,4 +12,3 @@ class Settings:
     @property
     def CONFIG_FILE(self):
         return self._configfile
-
