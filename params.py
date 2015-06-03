@@ -1,5 +1,6 @@
 from platform.delimer import DoubleDelimer, SingleDelimer
 from platform.exception import WrongOptions
+from platform.keydefaultdict import keydefaultdict
 
 
 class Params:
@@ -7,7 +8,7 @@ class Params:
         self.argv = []
         self.delimer = []
         self.targets = []
-        self.options = {}
+        self.options = keydefaultdict(lambda x: None)
         self._helpOptionIndex = None
 
     @staticmethod
