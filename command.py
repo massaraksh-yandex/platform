@@ -47,7 +47,7 @@ class Command(metaclass=ABCMeta):
 
     def _execute(self, argv):
         self._commandparams = Config.instance.commandparams(self.path('.'))
-        p = Params.make(argv)
+        p = self._makeParams(argv)
         if self._needHelp(p):
             self._printHelp(self._help())
         else:
@@ -75,6 +75,9 @@ class Command(metaclass=ABCMeta):
 
         return separator.join(chain(self))
 
+    def _makeParams(self, argv):
+        return Params.parse(argv)
+
     @abstractmethod
     def name(self) -> '':
         pass
@@ -91,3 +94,4 @@ class Command(metaclass=ABCMeta):
 
     def _process(self, p: Params, res):
         self._commands()[res](self).execute(p.argv[1:])
+
