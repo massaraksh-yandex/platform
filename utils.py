@@ -1,8 +1,10 @@
 from os.path import join, basename
+from os.path import dirname, realpath
 from glob import glob
 import sys
 import io
 from platform.config import Config
+from platform.command import Command
 
 
 def importCommands(path):
@@ -25,9 +27,23 @@ def makeCommandDict(*commands):
     return { c.name(c): c for c in commands }
 
 
-def main(configInstance):
+def main(name, path, configInstance):
+    class MainCommand(Command):
+        def __init__(self, name, path):
+            super().__init__(None)
+            self._name = name
+            self._realpath = path
+        def name(self):
+            return self._name
+
+        def _commands(self):
+            realPath = dirname(realpath(self._realpath))
+            return importCommands(realPath)
+
     Config.instance = configInstance
     setupCodecs()
+    MainCommand(name, path).execute(sys.argv[1:])
+
 
 
 def setupCodecs():
