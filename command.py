@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 from platform.color import colored, Color, Style
 from platform.params import Params
 from platform.exception import WrongOptions, WrongTargets, WrongDelimers
-from platform.utils import recieverOptions
+from platform.check import recieverOptions
 from platform.config import Config
 
 class Command(metaclass=ABCMeta):
