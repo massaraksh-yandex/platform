@@ -1,5 +1,3 @@
-from platform.exception import WrongDelimers
-
 class Delimer:
     def __init__(self, index):
         self.index = index
