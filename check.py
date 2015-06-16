@@ -1,4 +1,4 @@
-from platform.exception import WrongDelimers, WrongOptions, WrongTargets
+from platform.exception import WrongDelimers, WrongOptions, WrongTargets, PlatformException
 from platform.params import Params
 
 
@@ -7,28 +7,28 @@ class Size:
     def equals(arr, size, message = None):
         if len(arr) != size:
             m = 'Неверный размер массива: ожидалось {0}, получен {1}'.format(len(arr), size)
-            raise ValueError(m if not message else message)
+            raise PlatformException(m if not message else message)
         return True
 
     @staticmethod
     def moreOrEquals(arr, size, message = None):
         if len(arr) < size:
             m = 'Неверный размер массива: ожидалось как минимум {0}, получен {1}'.format(len(arr), size)
-            raise ValueError(m if not message else message)
+            raise PlatformException(m if not message else message)
         return True
 
     @staticmethod
     def notEquals(arr, size, message = None):
         if len(arr) == size:
             m = 'Неверный размер массива: ожидалось {0}, получен {1}'.format(len(arr), size)
-            raise ValueError(m if not message else message)
+            raise PlatformException(m if not message else message)
         return True
 
     @staticmethod
     def bounds(arr, low, high, message = None):
         if low <= len(arr) < high:
             m = 'Неверный размер массива: ожидалось {0} < {1} < {2}'.format(low, len(arr), high)
-            raise ValueError(m if not message else message)
+            raise PlatformException(m if not message else message)
         return True
 
 
@@ -58,7 +58,7 @@ class Empty:
     @staticmethod
     def array(arr):
         if arr:
-            raise ValueError('Массив должен быть пуст: {0}'.format(str(arr)))
+            raise PlatformException('Массив должен быть пуст: {0}'.format(str(arr)))
         return True
 
     @staticmethod
@@ -84,7 +84,7 @@ class NotEmpty:
     @staticmethod
     def array(arr):
         if not arr:
-            raise ValueError('Массив должен быть не пуст')
+            raise PlatformException('Массив должен быть не пуст')
         return True
 
     @staticmethod
@@ -110,7 +110,7 @@ class Has:
     def inArray(arr, el, message = None):
         if el not in arr:
             m = 'Отсутсвует элемент {0}, получено {1}'.format(el, str(arr))
-            raise ValueError(m if message is None else message)
+            raise PlatformException(m if message is None else message)
         return True
 
 def emptyCommand(func):
@@ -129,7 +129,7 @@ def singleOptionCommand(res, functor = lambda p: True):
 
 
 def raiseWrongParsing():
-    raise ValueError('Ошибочное условие')
+    raise PlatformException('Ошибочное условие')
 
 def recieverOptions(map):
     return [lambda p: p.argv[0] if Has.inArray(map, p.argv[0]) else raiseWrongParsing()]

@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from platform.color import colored, Color, Style
 from platform.params import Params
-from platform.exception import WrongOptions, WrongTargets, WrongDelimers
+from platform.exception import PlatformException
 from platform.check import recieverOptions
 from platform.config import Config
 
@@ -26,7 +26,7 @@ class Command(metaclass=ABCMeta):
         for l in self._rules():
             try:
                 rets.add(l(p))
-            except Exception:
+            except PlatformException:
                 pass
 
         l = len(rets)
@@ -37,9 +37,9 @@ class Command(metaclass=ABCMeta):
                 message = 'Аргументы не подходят ни под одно правило'
             else:
                 message = ''
-            raise WrongTargets(message)
+            raise PlatformException(message)
         else:
-            raise WrongTargets('Аргументы подходят под несколько правил программы')
+            raise PlatformException('Аргументы подходят под несколько правил программы')
 
     def _needHelp(self, p: Params):
         return p._helpOptionIndex is not None and \
@@ -57,11 +57,7 @@ class Command(metaclass=ABCMeta):
     def execute(self, argv):
         try:
             self._execute(argv)
-        except WrongOptions as e:
-            self._error(e)
-        except WrongTargets as e:
-            self._error(e)
-        except WrongDelimers as e:
+        except PlatformException as e:
             self._error(e)
         except KeyError as e:
             self._error(e)

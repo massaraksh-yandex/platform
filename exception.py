@@ -1,8 +1,11 @@
-class WrongOptions(Exception):
+class PlatformException(Exception):
     pass
 
-class WrongTargets(Exception):
+class WrongOptions(PlatformException):
     pass
 
-class WrongDelimers(Exception):
+class WrongTargets(PlatformException):
+    pass
+
+class WrongDelimers(PlatformException):
     pass
