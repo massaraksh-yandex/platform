@@ -28,6 +28,8 @@ class Command(metaclass=ABCMeta):
                 rets.add(l(p))
             except PlatformException:
                 pass
+            except IndexError:
+                pass
 
         l = len(rets)
         if l == 1:

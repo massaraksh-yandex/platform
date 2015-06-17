@@ -52,6 +52,9 @@ class Params:
 
     @staticmethod
     def parse(args):
+        if isinstance(args, Params):
+            return args
+
         p = Params()
         p.argv = args
         passedTargets = 0
