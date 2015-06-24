@@ -31,15 +31,10 @@ class Command(metaclass=ABCMeta):
             except IndexError:
                 pass
 
-        l = len(rets)
-        if l == 1:
+        if not rets:
+            raise PlatformException('Аргументы не подходят ни под одно правило' if len(p.argv) else '')
+        elif len(rets) == 1:
             return rets.pop()
-        elif l == 0:
-            if len(p.argv):
-                message = 'Аргументы не подходят ни под одно правило'
-            else:
-                message = ''
-            raise PlatformException(message)
         else:
             raise PlatformException('Аргументы подходят под несколько правил программы')
 
