@@ -36,8 +36,8 @@ class Check:
     @staticmethod
     def delimerType(delimer, type):
         if not isinstance(delimer, type):
-            raise WrongDelimers('Неверный тип разделителя: получен {0}, ожидался {1}'
-                                .format(delimer.__name__, type.__name__))
+            raise WrongDelimers('')#'Неверный тип разделителя: получен {0}, ожидался {1}'
+                                #.format(type(delimer).__name__, type.__class__.__name__))
         return True
 
     @staticmethod
