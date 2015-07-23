@@ -4,10 +4,8 @@ class Delimer(object):
 
 
 class DoubleDelimer(Delimer):
-    def __init__(self, index):
-        super().__init__(index)
+    pass
 
 
 class SingleDelimer(Delimer):
-    def __init__(self, index):
-        super().__init__(index)
+    pass

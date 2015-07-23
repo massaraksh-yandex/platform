@@ -63,8 +63,8 @@ class Empty:
 
     @staticmethod
     def delimers(p: Params):
-        if p.delimer:
-            raise WrongDelimers('Разделители должны быть пусты: {0}'.format(str(p.delimer)))
+        if p.delimers:
+            raise WrongDelimers('Разделители должны быть пусты: {0}'.format(str(p.delimers)))
         return True
 
     @staticmethod
@@ -89,7 +89,7 @@ class NotEmpty:
 
     @staticmethod
     def delimers(p: Params):
-        if not p.delimer:
+        if not p.delimers:
             raise WrongDelimers('Разделители должны быть не пусты')
         return True
 
