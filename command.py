@@ -43,7 +43,6 @@ class Command(metaclass=ABCMeta):
                p._helpOptionIndex == 0
 
     def _execute(self, argv):
-        self._commandparams = Config.instance.commandparams(self.path('.'))
         p = self._makeParams(argv)
         if self._needHelp(p):
             self._printHelp(self._help())

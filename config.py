@@ -8,17 +8,10 @@ class Config:
                 self.params = json.load(f)
         else:
             self.params = map
-        if 'commandparams' not in self.params:
-            self.params['commandparams'] = {}
+        self.settings = settings
 
     def serialize(self):
-        with open(Settings().CONFIG_FILE, 'w') as f:
+        with open(self.settings.CONFIG_FILE, 'w') as f:
             json.dump(self.params, f, indent=4, sort_keys=True)
-
-    def commandparams(self, p) -> {}:
-        for param, value in self.params['commandparams'].items():
-            if p.find(param) != -1:
-                return value
-        return {}
 
     instance = None
