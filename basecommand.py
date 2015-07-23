@@ -41,6 +41,10 @@ class BaseCommand(metaclass=ABCMeta):
         for s in self._help():
             print(s.format(**map))
 
+        for l in self._rules():
+            for s in l.messages:
+                print(s.format(**map))
+
     def _error(self, message):
         print(colored(str(message), Color.red))
         self._printHelp()
@@ -57,12 +61,9 @@ class BaseCommand(metaclass=ABCMeta):
     def _checkRules(self, p: Params):
         rets = set()
         for l in self._rules():
-            try:
-                rets.add(l(p))
-            except PlatformException:
-                pass
-            except IndexError:
-                pass
+            res = l.attempt(p)
+            if res is not None:
+                rets.add(res)
 
         return self._checkselectedrule(rets, p)
 

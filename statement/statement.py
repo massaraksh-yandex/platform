@@ -1,0 +1,34 @@
+from platform.exception import PlatformException
+from platform.params import Params
+from platform.statement.rule import Rule
+
+
+class Statement:
+    def __init__(self, messages, result, rule):
+        self.rule = rule
+        self.messages = messages
+        self.result = result
+
+    def attempt(self, p: Params):
+        try:
+            self.rule(p)
+        except PlatformException:
+            return None
+        except IndexError:
+            return None
+
+        return self.result
+
+
+def emptyCommand(messages, result):
+    return [ Statement(messages, result,
+                       rule=lambda p: Rule(p).empty().delimers()
+                                             .empty().options()
+                                             .empty().targets() ) ]
+
+
+def singleOptionCommand(messages, result):
+    return [ Statement(messages, result,
+                       lambda p: Rule(p).empty().delimers()
+                                        .empty().options()
+                                        .size().equals(p.targets, 1)) ]

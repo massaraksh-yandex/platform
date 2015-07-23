@@ -3,7 +3,7 @@ from abc import abstractmethod
 from platform.basecommand import BaseCommand
 from platform.params import Params
 from platform.exception import PlatformException
-from platform.check import recieverOptions
+from platform.statement.statement import Statement, Rule
 
 
 class Command(BaseCommand):
@@ -11,13 +11,18 @@ class Command(BaseCommand):
         return p.needHelp and len(p.targets) == 0
 
     def _help(self):
-        return ['{path} '+pr(self).name() for k, pr in self._commands().items()]
+        return []
 
     def _rules(self) -> []:
-        return recieverOptions(self._commands())
+        ret = []
+        for k, v in self._commands().items():
+            ret.append(Statement(['{path} '+v(self).name()], True,
+                                 lambda p: Rule(p).notEmpty().targets()
+                                                  .check().firstTargetEquality(k)))
+        return ret
 
     def _process(self, p: Params, res):
-        self._commands()[res](self).execute(p.argv[1:])
+        self._commands()[p.argv[0]](self).execute(p.argv[1:])
 
     def _ignoredexceptions(self) -> ():
         return (PlatformException, KeyError)
