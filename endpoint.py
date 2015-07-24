@@ -20,7 +20,7 @@ class Endpoint(BaseCommand):
         pass
 
     @abstractmethod
-    def _help(self) -> []:
+    def _info(self) -> []:
         pass
 
     @abstractmethod

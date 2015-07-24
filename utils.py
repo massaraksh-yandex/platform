@@ -28,7 +28,7 @@ def makeCommandDict(*commands):
     return { c.name(c): c for c in commands }
 
 
-def main(name, hooks = ConfigHooks(check=lambda: True, create=lambda: Config(),
+def main(name, information, hooks = ConfigHooks(check=lambda: True, create=lambda: Config(),
                                    init=lambda: None, save=lambda: None )):
     class MainCommand(Command):
         def __init__(self, name):
@@ -37,7 +37,8 @@ def main(name, hooks = ConfigHooks(check=lambda: True, create=lambda: Config(),
             self._realpath = join(__file__, pardir)
         def name(self):
             return self._name
-
+        def _info(self):
+            return information
         def _commands(self):
             realPath = dirname(realpath(self._realpath))
             return importCommands(realPath)

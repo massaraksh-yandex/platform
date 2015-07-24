@@ -5,14 +5,14 @@ from platform.statement.rule import Rule
 
 class Statement:
     def __init__(self, messages, result, rule):
-        self.rule = rule
         self.messages = messages
         self.result = result
+        self.rule = rule
 
     def attempt(self, p: Params):
         try:
             self.rule(p)
-        except PlatformException:
+        except PlatformException as e:
             return None
         except IndexError:
             return None

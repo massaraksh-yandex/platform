@@ -34,19 +34,16 @@ class BaseCommand(metaclass=ABCMeta):
             self._process(p, self._checkRules(p))
 
     def _printHelp(self):
-        map = dict(path=colored(self.path(), Color.green, Style.underline),
-                   name=self.name(),
-                   space='\t')
-
-        for s in self._help():
-            print(s.format(**map))
-
+        print (self._listToMessage(self._info()))
+        print()
+        print('Использование:')
         for l in self._rules():
-            for s in l.messages:
-                print(s.format(**map))
+            print (self._listToMessage(l.messages))
 
-    def _error(self, message):
-        print(colored(str(message), Color.red))
+    def _error(self, error):
+        message = str(error)
+        if message != '':
+            print(colored(message, Color.red))
         self._printHelp()
 
     def _checkselectedrule(self, ruleset: set, p: Params):
@@ -67,12 +64,18 @@ class BaseCommand(metaclass=ABCMeta):
 
         return self._checkselectedrule(rets, p)
 
+    def _listToMessage(self, lst: list):
+        map = dict(path=colored(self.path(), Color.green, Style.underline),
+                   name=self.name(),
+                   space='\t')
+        return '\n'.join(lst).format(**map)
+
     @abstractmethod
     def name(self) -> '':
         pass
 
     @abstractmethod
-    def _help(self) -> []:
+    def _info(self) -> []:
         pass
 
     @abstractmethod

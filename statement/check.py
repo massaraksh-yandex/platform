@@ -18,7 +18,7 @@ class Check:
                 raise WrongOptions()
         return self.rule
 
-    def firstTargetEquality(self, pattern):
-        if self.p.argv[0] != pattern:
+    def target(self, index, pattern):
+        if self.p.targets[index].value != pattern:
             raise WrongTargets()
         return self.rule

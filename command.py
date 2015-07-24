@@ -1,5 +1,4 @@
 from abc import abstractmethod
-
 from platform.basecommand import BaseCommand
 from platform.params import Params
 from platform.exception import PlatformException
@@ -10,15 +9,13 @@ class Command(BaseCommand):
     def _needHelp(self, p: Params):
         return p.needHelp and len(p.targets) == 0
 
-    def _help(self):
-        return []
-
     def _rules(self) -> []:
         ret = []
         for k, v in self._commands().items():
-            ret.append(Statement(['{path} '+v(self).name()], True,
-                                 lambda p: Rule(p).notEmpty().targets()
-                                                  .check().firstTargetEquality(k)))
+            cmd = v(self)
+            ret.append(Statement([ cmd._listToMessage(cmd._info()) ], True,
+                                 lambda p, name=k: Rule(p).notEmpty().targets().check().target(0, name)))
+
         return ret
 
     def _process(self, p: Params, res):
