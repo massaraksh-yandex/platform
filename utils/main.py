@@ -15,7 +15,7 @@ def main(name, information, hooks = ConfigHooks(check=lambda: True, create=lambd
         def __init__(self, name):
             super().__init__(None)
             self._name = name
-            self._realpath = join(__file__, pardir)
+            self._realpath = join(__file__, pardir, pardir)
         def name(self):
             return self._name
         def _info(self):
