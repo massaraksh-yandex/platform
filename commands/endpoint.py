@@ -1,8 +1,7 @@
 from abc import abstractmethod
-from platform.command import Command
-from platform.basecommand import BaseCommand
-from platform.exception import PlatformException
-from platform.params import Params
+from platform.commands.basecommand import BaseCommand
+from platform.params.exception import PlatformException
+from platform.params.params import Params
 
 
 class Endpoint(BaseCommand):

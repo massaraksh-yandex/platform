@@ -1,4 +1,4 @@
-from platform.exception import WrongOptions, PlatformException
+from platform.params.exception import WrongOptions, PlatformException
 
 
 class Has:

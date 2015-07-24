@@ -1,7 +1,7 @@
 from abc import abstractmethod
-from platform.basecommand import BaseCommand
-from platform.params import Params
-from platform.exception import PlatformException
+from platform.commands.basecommand import BaseCommand
+from platform.params.params import Params
+from platform.params.exception import PlatformException
 from platform.statement.statement import Statement, Rule
 
 

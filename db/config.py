@@ -1,5 +1,6 @@
+from platform.db.settings import Settings
 import json
-from platform.settings import Settings
+
 
 class Config:
     def __init__(self, settings = Settings(), map = None):

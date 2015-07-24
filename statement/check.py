@@ -1,4 +1,4 @@
-from platform.exception import WrongDelimers, WrongOptions, WrongTargets
+from platform.params.exception import WrongDelimers, WrongOptions, WrongTargets
 
 
 class Check:

@@ -1,4 +1,4 @@
-from platform.exception import WrongOptions, PlatformException, WrongDelimers, WrongTargets
+from platform.params.exception import WrongOptions, PlatformException, WrongDelimers, WrongTargets
 
 
 class Empty:

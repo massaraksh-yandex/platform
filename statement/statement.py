@@ -1,5 +1,5 @@
-from platform.exception import PlatformException
-from platform.params import Params
+from platform.params.exception import PlatformException
+from platform.params.params import Params
 from platform.statement.rule import Rule
 
 

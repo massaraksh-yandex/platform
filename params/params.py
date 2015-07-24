@@ -1,13 +1,16 @@
-from platform.delimer import DoubleDelimer, SingleDelimer
-from platform.exception import WrongDelimers
-from platform.keydefaultdict import keydefaultdict
 from collections import namedtuple
+from platform.params.delimer import DoubleDelimer, SingleDelimer
+from platform.params.exception import WrongDelimers
+from platform.utils.keydefaultdict import keydefaultdict
+
 
 def isOption(arg):
     return arg.startswith('--') and arg != '--'
 
+
 def isDelimer(arg):
     return arg == '-' or arg == '--'
+
 
 def createdelimer(delimer, index):
     if delimer == '-':
@@ -17,11 +20,14 @@ def createdelimer(delimer, index):
     else:
         raise WrongDelimers('Не могу создать разделитель: {0}, {1}'.format(delimer, index))
 
+
 def _parseOption(arg):
     opt = arg[2:].split('=', 1)
     return (opt[0], None if len(opt) == 1 else opt[1])
 
+
 Target = namedtuple('Target', ['value', 'index'])
+
 
 class Params:
     def __init__(self, args):

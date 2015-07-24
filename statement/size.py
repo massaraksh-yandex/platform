@@ -1,4 +1,4 @@
-from platform.exception import PlatformException
+from platform.params.exception import PlatformException
 
 
 class Size:

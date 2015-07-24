@@ -1,4 +1,4 @@
-from platform.params import Params
+from platform.params.params import Params
 from platform.statement.check import Check
 from platform.statement.empty import Empty
 from platform.statement.has import Has

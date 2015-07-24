@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
-from platform.color import colored, Color, Style
-from platform.exception import PlatformException
-from platform.params import Params
+from platform.color.color import colored, Color, Style
+from platform.params.exception import PlatformException
+from platform.params.params import Params
 
 
 class BaseCommand(metaclass=ABCMeta):
