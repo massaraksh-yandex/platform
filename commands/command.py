@@ -12,14 +12,14 @@ class Command(BaseCommand):
     def _rules(self) -> []:
         ret = []
         for k, v in self._commands().items():
-            cmd = v(self)
+            cmd = v(self, self.config)
             ret.append(Statement([ cmd._listToMessage(cmd._info()) ], True,
                                  lambda p, name=k: Rule(p).notEmpty().targets().check().target(0, name)))
 
         return ret
 
     def _process(self, p: Params, res):
-        self._commands()[p.argv[0]](self).execute(p.argv[1:])
+        self.subcmd(self._commands()[p.argv[0]]).execute(p.argv[1:])
 
     def _ignoredexceptions(self) -> ():
         return (PlatformException, KeyError)

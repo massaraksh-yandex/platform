@@ -12,8 +12,8 @@ ConfigHooks = namedtuple('ConfigHooks', ['check', 'init', 'save', 'create'])
 def main(name, information, hooks = ConfigHooks(check=lambda: True, create=lambda: Config(),
                                    init=lambda: None, save=lambda: None )):
     class MainCommand(Command):
-        def __init__(self, name):
-            super().__init__(None)
+        def __init__(self, name, config):
+            super().__init__(None, config)
             self._name = name
             self._realpath = join(__file__, pardir, pardir)
         def name(self):
@@ -30,4 +30,4 @@ def main(name, information, hooks = ConfigHooks(check=lambda: True, create=lambd
         hooks.init()
         hooks.save()
     Config.instance = hooks.create()
-    MainCommand(name).execute(sys.argv[1:])
+    MainCommand(name, hooks.create()).execute(sys.argv[1:])

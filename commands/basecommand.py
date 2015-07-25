@@ -5,8 +5,9 @@ from platform.params.params import Params
 
 
 class BaseCommand(metaclass=ABCMeta):
-    def __init__(self, parent):
+    def __init__(self, parent, cfg):
         self.parent = parent
+        self.config = cfg
 
     def path(self, separator = ' ') -> str:
         def chain(s):
@@ -25,6 +26,9 @@ class BaseCommand(metaclass=ABCMeta):
                 self._error(e)
             else:
                 raise
+
+    def subcmd(self, cls):
+        return cls(self, self.config)
 
     def _execute(self, argv):
         p = Params(argv)
