@@ -41,7 +41,9 @@ class BaseCommand(metaclass=ABCMeta):
         print (self._listToMessage(self._info()))
         print()
         print('Использование:')
-        for l in self._rules():
+
+        rules = self._rules() if isinstance(self._rules(), list) else [self._rules()]
+        for l in rules:
             print (self._listToMessage(l.messages))
 
     def _error(self, error):
