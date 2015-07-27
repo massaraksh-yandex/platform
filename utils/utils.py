@@ -28,3 +28,11 @@ def setupCodecs():
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', line_buffering = True)
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', line_buffering = True)
     sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
+
+
+def readLineWithPrompt(message, default):
+    line = input('{0} [{1}]: '.format(message, default)).rstrip()
+    if len(line) != 0:
+        return line
+    else:
+        return default
