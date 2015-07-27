@@ -2,12 +2,14 @@ from abc import ABCMeta, abstractmethod
 from platform.color.color import colored, Color, Style
 from platform.params.exception import PlatformException
 from platform.params.params import Params
+from src.database import Database
 
 
 class BaseCommand(metaclass=ABCMeta):
     def __init__(self, parent, cfg):
         self.parent = parent
         self.config = cfg
+        self.database = Database(cfg.settings)
 
     def path(self, separator = ' ') -> str:
         def chain(s):
@@ -42,8 +44,7 @@ class BaseCommand(metaclass=ABCMeta):
         print()
         print('Использование:')
 
-        rules = self._rules() if isinstance(self._rules(), list) else [self._rules()]
-        for l in rules:
+        for l in self._rules():
             print (self._listToMessage(l.messages))
 
     def _error(self, error):
