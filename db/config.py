@@ -10,9 +10,11 @@ class Config:
         else:
             self.params = map
         self.settings = settings
+        self.name = settings.CONFIG_FILE
 
+
+    def __repr__(self):
+        return json.dumps(self.params)
     def serialize(self):
         with open(self.settings.CONFIG_FILE, 'w') as f:
             json.dump(self.params, f, indent=4, sort_keys=True)
-
-    instance = None

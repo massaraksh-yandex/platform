@@ -2,14 +2,12 @@ from abc import ABCMeta, abstractmethod
 from platform.color.color import colored, Color, Style
 from platform.params.exception import PlatformException
 from platform.params.params import Params
-from src.database import Database
 
 
 class BaseCommand(metaclass=ABCMeta):
-    def __init__(self, parent, cfg):
+    def __init__(self, parent, database):
         self.parent = parent
-        self.config = cfg
-        self.database = Database(cfg.settings)
+        self.database = database
 
     def path(self, separator = ' ') -> str:
         def chain(s):
@@ -30,7 +28,7 @@ class BaseCommand(metaclass=ABCMeta):
                 raise
 
     def subcmd(self, cls):
-        return cls(self, self.config)
+        return cls(self, self.database)
 
     def _execute(self, argv):
         p = Params(argv)

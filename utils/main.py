@@ -2,18 +2,22 @@ from collections import namedtuple
 from os.path import join, pardir, dirname, realpath
 from platform.commands.command import Command
 from platform.db.config import Config
+from platform.db.database import Database
+from platform.db.settings import Settings
 from platform.utils.utils import importCommands, setupCodecs
 import sys
 
 
-ConfigHooks = namedtuple('ConfigHooks', ['check', 'init', 'save', 'create'])
+ConfigHooks = namedtuple('ConfigHooks', ['checkfiles', 'createfiles', 'saveconfig', 'createdatabase'])
 
 
-def main(name, information, hooks = ConfigHooks(check=lambda: True, create=lambda: Config(),
-                                   init=lambda: None, save=lambda: None )):
+def main(name, information, hooks = ConfigHooks(checkfiles=lambda: True,
+                                                createfiles=lambda: Config(),
+                                                saveconfig=lambda: None,
+                                                createdatabase=lambda: Database(Settings()))):
     class MainCommand(Command):
-        def __init__(self, name, config):
-            super().__init__(None, config)
+        def __init__(self, name, database):
+            super().__init__(None, database)
             self._name = name
             self._realpath = join(__file__, pardir, pardir)
         def name(self):
@@ -26,8 +30,7 @@ def main(name, information, hooks = ConfigHooks(check=lambda: True, create=lambd
 
     setupCodecs()
 
-    if not hooks.check():
-        hooks.init()
-        hooks.save()
-    Config.instance = hooks.create()
-    MainCommand(name, hooks.create()).execute(sys.argv[1:])
+    if not hooks.checkfiles():
+        hooks.createfiles()
+        hooks.saveconfig()
+    MainCommand(name, hooks.createdatabase()).execute(sys.argv[1:])
