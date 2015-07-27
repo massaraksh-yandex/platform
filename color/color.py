@@ -10,6 +10,7 @@ class Color(Enum):
     violent = 35
     cyan = 36
     white = 37
+    no = 0
 
 
 class Style(Enum):
@@ -19,7 +20,10 @@ class Style(Enum):
 
 
 def start(c: Color, s: Style = Style.normal):
-    return '\033[{style};{color}m'.format(style=s.value, color=c.value)
+    if c == Color.no:
+        return ''
+    else:
+        return '\033[{style};{color}m'.format(style=s.value, color=c.value)
 
 
 def end():
