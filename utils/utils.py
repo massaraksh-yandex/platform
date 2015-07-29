@@ -12,15 +12,15 @@ def importCommands(path):
         module = __import__(basename(name[:-3]), globals(), locals())
 
         try:
-            for command in module.module_commands.keys():
-                commands[command] = module.module_commands[command]
+            for command in module.commands.keys():
+                commands[command] = module.commands[command]
         except AttributeError:
             pass
 
     return commands
 
 
-def makeCommandDict(*commands):
+def registerCommands(*commands):
     return { c.name(c): c for c in commands }
 
 
