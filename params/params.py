@@ -9,13 +9,13 @@ def isOption(arg):
 
 
 def isDelimer(arg):
-    return arg == '-' or arg == '--'
+    return arg == SingleDelimer.value or arg == DoubleDelimer.value
 
 
 def createdelimer(delimer, index):
-    if delimer == '-':
+    if delimer == SingleDelimer.value:
         return SingleDelimer(index)
-    elif delimer == '--':
+    elif delimer == DoubleDelimer.value:
         return DoubleDelimer(index)
     else:
         raise WrongDelimers('Не могу создать разделитель: {0}, {1}'.format(delimer, index))

@@ -4,8 +4,8 @@ class Delimer(object):
 
 
 class DoubleDelimer(Delimer):
-    pass
+    value = '--'
 
 
 class SingleDelimer(Delimer):
-    pass
+    value = '-'
