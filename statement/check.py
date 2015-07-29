@@ -12,7 +12,7 @@ class Check:
                 raise WrongDelimers()
         return self.rule
 
-    def optionNamesInSet(self, set):
+    def optionNamesInSet(self, *set):
         for o in self.p.options:
             if o not in set:
                 raise WrongOptions()
