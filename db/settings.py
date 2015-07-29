@@ -1,5 +1,6 @@
 from os.path import join, expanduser
 
+
 class Settings:
     def __init__(self, name = '.platform'):
         self._configdir = join(expanduser('~'), name)
