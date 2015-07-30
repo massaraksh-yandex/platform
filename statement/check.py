@@ -18,6 +18,14 @@ class Check:
                 raise WrongOptions()
         return self.rule
 
+    def optionValueInSet(self, name, *set):
+        value = self.p.options[name]
+        if not value and None not in set:
+            raise WrongOptions()
+        if value not in set:
+            raise WrongOptions()
+        return self.rule
+
     def target(self, index, pattern):
         if self.p.targets[index].value != pattern:
             raise WrongTargets()

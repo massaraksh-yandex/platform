@@ -20,6 +20,14 @@ class Statement:
         return self.result
 
 
+class InfoStatement:
+    def __init__(self, messages):
+        self.messages = messages
+
+    def attempt(self, p: Params):
+        return None
+
+
 def emptyCommand(messages, result):
     return [ Statement(messages, result,
                        rule=lambda p: Rule(p).empty().delimers()
