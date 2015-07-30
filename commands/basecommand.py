@@ -44,6 +44,7 @@ class BaseCommand(metaclass=ABCMeta):
 
         for l in self._rules():
             print (self._listToMessage(l.messages))
+            print()
 
     def _error(self, error):
         message = str(error)

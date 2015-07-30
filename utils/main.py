@@ -12,9 +12,9 @@ ConfigHooks = namedtuple('ConfigHooks', ['checkfiles', 'createfiles', 'saveconfi
 
 
 def main(name, information, hooks = ConfigHooks(checkfiles=lambda: True,
-                                                createfiles=lambda: Config(),
+                                                createfiles=lambda: None,
                                                 saveconfig=lambda: None,
-                                                createdatabase=lambda: Database(Settings()))):
+                                                createdatabase=lambda: None)):
     class MainCommand(Command):
         def __init__(self, name, database):
             super().__init__(None, database)

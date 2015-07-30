@@ -4,7 +4,7 @@ from platform.remote.ssh import ssh
 
 
 class remote(object):
-    def __init__(self, host, impl = ssh()):
+    def __init__(self, host = 'localhost', impl = ssh()):
         self._host = host
         self._args = []
         self._stderr = None
