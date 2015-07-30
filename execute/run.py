@@ -1,9 +1,9 @@
 from subprocess import STDOUT
 
-from platform.remote.ssh import ssh
+from platform.execute.ssh import ssh
 
 
-class remote(object):
+class run(object):
     def __init__(self, host = 'localhost', impl = ssh()):
         self._host = host
         self._args = []
