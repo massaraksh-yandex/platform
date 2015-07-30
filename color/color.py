@@ -30,5 +30,5 @@ def end():
     return '\033[m'
 
 
-def colored(str, color: Color, style: Style = Style.normal):
-    return start(color, style) + str + end()
+def colored(s, color: Color, style: Style = Style.normal):
+    return start(color, style) + str(s) + end()
