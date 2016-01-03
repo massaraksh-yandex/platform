@@ -1,5 +1,4 @@
-from subprocess import STDOUT
-
+from subprocess import STDOUT, PIPE
 from platform.execute.ssh import ssh
 
 
@@ -7,9 +6,17 @@ class run(object):
     def __init__(self, host = 'localhost', impl = ssh()):
         self._host = host
         self._args = []
-        self._stderr = None
+        self._stderr = PIPE
         self._path = '.'
         self._impl = impl
+        self.code = 0
+        self.err = None
+        self.out = ''
+
+    def _collectdata(self, p):
+        self.code = p.returncode
+        self.out = p.communicate()[0].decode('utf-8')
+        self.err = p.communicate()[1].decode('utf-8')
 
     def cmd(self, s):
         self._args = s
@@ -24,7 +31,9 @@ class run(object):
         return self
 
     def call(self):
-        return self._impl.cmd(self._stderr, self._host, self._path, self._args).communicate()[0].decode('utf-8')
+        p = self._impl.cmd(self._stderr, self._host, self._path, self._args)
+        self._collectdata(p)
+        return self.out
 
     def exec(self):
         p = self._impl.cmd(self._stderr, self._host, self._path, self._args)
@@ -33,3 +42,6 @@ class run(object):
             if line == '':
                 break
             yield line
+
+        self._collectdata(p)
+
