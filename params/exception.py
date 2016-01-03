@@ -10,5 +10,5 @@ class WrongTargets(PlatformException):
     pass
 
 
-class WrongDelimers(PlatformException):
+class WrongDelimiters(PlatformException):
     pass

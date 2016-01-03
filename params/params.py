@@ -1,29 +1,8 @@
+import re
 from collections import namedtuple
-from platform.params.delimer import DoubleDelimer, SingleDelimer
-from platform.params.exception import WrongDelimers
-from platform.utils.keydefaultdict import keydefaultdict
-
-
-def isOption(arg):
-    return arg.startswith('--') and arg != '--'
-
-
-def isDelimer(arg):
-    return arg == SingleDelimer.value or arg == DoubleDelimer.value
-
-
-def createdelimer(delimer, index):
-    if delimer == SingleDelimer.value:
-        return SingleDelimer(index)
-    elif delimer == DoubleDelimer.value:
-        return DoubleDelimer(index)
-    else:
-        raise WrongDelimers('Не могу создать разделитель: {0}, {1}'.format(delimer, index))
-
-
-def _parseOption(arg):
-    opt = arg[2:].split('=', 1)
-    return (opt[0], None if len(opt) == 1 else opt[1])
+from params.delimiter import SingleDelimiter, DoubleDelimiter
+from params.exception import WrongDelimiters
+from utils.keydefaultdict import keydefaultdict
 
 
 Target = namedtuple('Target', ['value', 'index'])
@@ -34,24 +13,47 @@ class Params:
         self.argv = args
         self.options = keydefaultdict(lambda x: None)
         self.targets = []
-        self.delimers = []
+        self.delimiters = []
 
+        r = re.compile('\-+$')
         index = 0
         for arg in self.argv:
-            if isOption(arg):
-                k, v = _parseOption(arg)
+            if Params._is_delimiter(r, arg):
+                self.delimiters.append(Params._create_delimiter(arg, index))
+            elif Params._is_option(arg):
+                k, v = Params._parse_option(arg)
                 self.options[k] = v
-            elif isDelimer(arg):
-                self.delimers.append(createdelimer(arg, index))
-            else:
-                self.targets.append(Target(value=arg, index=index))
+            elif arg:
+                self.targets.append(Target(arg, index))
                 index += 1
 
         self.needHelp = 'help' in self.options
 
-        self.delimered = []
         last = 0
-        for d in self.delimers:
-            self.delimered.append(self.targets[last:d.index])
+        self.separated = []
+        for d in self.delimiters:
+            self.separated.append(self.targets[last:d.index])
             last = d.index
-        self.delimered.append(self.targets[last:])
+        self.separated.append(self.targets[last:])
+
+    @staticmethod
+    def _is_option(arg):
+        return arg.startswith('--') and arg != '--'
+
+    @staticmethod
+    def _is_delimiter(reg, arg):
+        return reg.match(arg)
+
+    @staticmethod
+    def _create_delimiter(delimiter, index):
+        if delimiter == SingleDelimiter.value:
+            return SingleDelimiter(index)
+        elif delimiter == DoubleDelimiter.value:
+            return DoubleDelimiter(index)
+        else:
+            raise WrongDelimiters('Не могу создать разделитель: {0}, {1}'.format(delimiter, index))
+
+    @staticmethod
+    def _parse_option(arg):
+        opt = arg[2:].split('=', 1)
+        return opt[0], None if len(opt) == 1 else opt[1]
