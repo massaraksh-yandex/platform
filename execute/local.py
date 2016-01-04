@@ -1,13 +1,8 @@
 from subprocess import Popen, PIPE
 
 
-class local(object):
-    def _formparams(self, asShell, path, args):
-        if asShell:
-            return 'cd {0} && {1}'.format(path, args)
-        else:
-            return ['cd {0} && '.format(path)] + args
-
-    def cmd(self, err, host, path, args):
+class Local(object):
+    def cmd(self, error_stream, path, args):
         shell = not isinstance(args, list)
-        return Popen(self._formparams(shell, path, args), stdout=PIPE, stderr=err, shell=shell, bufsize=0)
+        command = 'cd {0} && {1}'.format(path, args) if shell else ['cd {0} && '.format(path)] + args
+        return Popen(command, stdout=PIPE, stderr=error_stream, shell=shell, bufsize=0)
