@@ -1,4 +1,4 @@
-from platform.params.exception import WrongDelimers, WrongOptions, WrongTargets
+from params.exception import WrongDelimiters, WrongOptions, WrongTargets
 
 
 class Check:
@@ -6,23 +6,23 @@ class Check:
         self.rule = rule
         self.p = rule.params
 
-    def delimersType(self, type):
-        for d in self.p.delimers:
-            if not isinstance(d, type):
-                raise WrongDelimers()
+    def delimiters_type(self, obj_type):
+        for d in self.p.delimiters:
+            if not isinstance(d, obj_type):
+                raise WrongDelimiters()
         return self.rule
 
-    def optionNamesInSet(self, *set):
+    def option_names_in_set(self, *lst):
         for o in self.p.options:
-            if o not in set:
+            if o not in lst:
                 raise WrongOptions()
         return self.rule
 
-    def optionValueInSet(self, name, *set):
+    def option_value_in_set(self, name, *lst):
         value = self.p.options[name]
-        if not value and None not in set:
+        if not value and None not in lst:
             raise WrongOptions()
-        if value not in set:
+        if value not in lst:
             raise WrongOptions()
         return self.rule
 

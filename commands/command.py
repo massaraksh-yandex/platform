@@ -14,7 +14,7 @@ class Command(BaseCommand):
         for k, v in self._commands().items():
             cmd = v(self, self.database)
             ret.append(Statement([ cmd._listToMessage(cmd._info()) ], True,
-                                 lambda p, name=k: Rule(p).notEmpty().targets().check().target(0, name)))
+                                 lambda p, name=k: Rule(p).not_empty().targets().check().target(0, name)))
 
         return ret
 

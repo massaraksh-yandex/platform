@@ -1,4 +1,4 @@
-from platform.params.exception import PlatformException
+from params.exception import PlatformException
 
 
 class Size:
@@ -10,12 +10,12 @@ class Size:
             raise PlatformException()
         return self.rule
 
-    def moreOrEquals(self, arr, size):
+    def more_or_equals(self, arr, size):
         if len(arr) < size:
             raise PlatformException()
         return self.rule
 
-    def notEquals(self, arr, size):
+    def not_equals(self, arr, size):
         if len(arr) == size:
             raise PlatformException()
         return self.rule

@@ -1,4 +1,4 @@
-from platform.params.exception import WrongOptions, PlatformException, WrongDelimers, WrongTargets
+from params.exception import WrongOptions, PlatformException, WrongDelimiters, WrongTargets
 
 
 class Empty:
@@ -16,9 +16,9 @@ class Empty:
             raise PlatformException()
         return self.rule
 
-    def delimers(self):
-        if self.p.delimers:
-            raise WrongDelimers()
+    def delimiters(self):
+        if self.p.delimiters:
+            raise WrongDelimiters()
         return self.rule
 
     def targets(self):

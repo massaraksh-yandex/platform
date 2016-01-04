@@ -1,4 +1,4 @@
-from platform.params.exception import WrongOptions, PlatformException
+from params.exception import WrongOptions, PlatformException
 
 
 class Has:
@@ -11,7 +11,7 @@ class Has:
             raise WrongOptions()
         return self.rule
 
-    def inArray(self, arr, el):
+    def in_array(self, arr, el):
         if el not in arr:
             raise PlatformException()
         return self.rule

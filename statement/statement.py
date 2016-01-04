@@ -1,6 +1,6 @@
-from platform.params.exception import PlatformException
-from platform.params.params import Params
-from platform.statement.rule import Rule
+from params.exception import PlatformException
+from params.params import Params
+from statement.rule import Rule
 
 
 class Statement:
@@ -12,7 +12,7 @@ class Statement:
     def attempt(self, p: Params):
         try:
             self.rule(p)
-        except PlatformException as e:
+        except PlatformException:
             return None
         except IndexError:
             return None
@@ -25,18 +25,19 @@ class InfoStatement:
         self.messages = messages
 
     def attempt(self, p: Params):
+        del p
         return None
 
 
-def emptyCommand(messages, result):
-    return [ Statement(messages, result,
-                       rule=lambda p: Rule(p).empty().delimers()
-                                             .empty().options()
-                                             .empty().targets() ) ]
+def empty_command(messages, result):
+    return [Statement(messages, result,
+                      rule=lambda p: Rule(p).empty().delimiters()
+                                            .empty().options()
+                                            .empty().targets())]
 
 
-def singleOptionCommand(messages, result):
-    return [ Statement(messages, result,
-                       lambda p: Rule(p).empty().delimers()
-                                        .empty().options()
-                                        .size().equals(p.targets, 1)) ]
+def single_option_command(messages, result):
+    return [Statement(messages, result,
+                      rule=lambda p: Rule(p).empty().delimiters()
+                                            .empty().options()
+                                            .size().equals(p.targets, 1))]

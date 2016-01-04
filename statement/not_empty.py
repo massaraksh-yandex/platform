@@ -1,4 +1,4 @@
-from platform.params.exception import WrongOptions, PlatformException, WrongDelimers, WrongTargets
+from params.exception import WrongOptions, PlatformException, WrongDelimiters, WrongTargets
 
 
 class NotEmpty:
@@ -16,9 +16,9 @@ class NotEmpty:
             raise PlatformException('Массив должен быть не пуст')
         return self.rule
 
-    def delimers(self):
-        if not self.p.delimers:
-            raise WrongDelimers('Разделители должны быть не пусты')
+    def delimiters(self):
+        if not self.p.delimiters:
+            raise WrongDelimiters('Разделители должны быть не пусты')
         return self.rule
 
     def targets(self):

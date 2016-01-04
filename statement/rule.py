@@ -1,9 +1,9 @@
-from platform.params.params import Params
-from platform.statement.check import Check
-from platform.statement.empty import Empty
-from platform.statement.has import Has
-from platform.statement.notempty import NotEmpty
-from platform.statement.size import Size
+from params.params import Params
+from statement.check import Check
+from statement.empty import Empty
+from statement.has import Has
+from statement.not_empty import NotEmpty
+from statement.size import Size
 
 
 class Rule:
@@ -19,10 +19,8 @@ class Rule:
     def empty(self):
         return Empty(self)
 
-    def notEmpty(self):
+    def not_empty(self):
         return NotEmpty(self)
 
     def has(self):
         return Has(self)
-
-
