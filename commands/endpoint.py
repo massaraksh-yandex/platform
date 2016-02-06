@@ -1,25 +1,26 @@
 from abc import abstractmethod
-from platform.commands.basecommand import BaseCommand
-from platform.params.exception import PlatformException
-from platform.params.params import Params
+from commands.basecommand import BaseCommand
+from params.exception import PlatformException
+from params.params import Params
 
 
 class Endpoint(BaseCommand):
-    def _needHelp(self, p: Params):
+    def _need_help(self, p: Params):
         return p.needHelp
 
-    def _process(self, p: Params, res):
+    def _process(self, p: Params):
+        res = self._check_rules(p)
         res(p)
 
-    def _ignoredexceptions(self) -> ():
-        return (PlatformException)
+    def _ignored_exceptions(self) -> ():
+        return PlatformException
 
     @abstractmethod
     def name(self) -> '':
         pass
 
     @abstractmethod
-    def _info(self) -> []:
+    def _about(self) -> []:
         pass
 
     @abstractmethod

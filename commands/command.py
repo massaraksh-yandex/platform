@@ -1,34 +1,49 @@
 from abc import abstractmethod
-from platform.commands.basecommand import BaseCommand
-from platform.params.params import Params
-from platform.params.exception import PlatformException
-from platform.statement.statement import Statement, Rule
+from commands.basecommand import BaseCommand
+from params.params import Params
+from params.exception import PlatformException
+from statement.statement import Statement
+from statement.rule import Rule
+
+
+def _command_map(commands):
+    return {c.name(c): c for c in commands}
 
 
 class Command(BaseCommand):
-    def _needHelp(self, p: Params):
+    def _need_help(self, p: Params):
         return p.needHelp and len(p.targets) == 0
 
     def _rules(self) -> []:
+        def command_rule(p):
+            return Rule(p).not_empty().targets().check().target(0, name)
+
         ret = []
-        for k, v in self._commands().items():
-            cmd = v(self, self.database)
-            ret.append(Statement([ cmd._listToMessage(cmd._info()) ], True,
-                                 lambda p, name=k: Rule(p).not_empty().targets().check().target(0, name)))
+        command_dict = _command_map(self._sub_commands())
+
+        for name, command_type in command_dict.items():
+            cmd = command_type(self, self.database)
+            formatted_about = cmd._list_to_message(cmd._about())
+
+            ret.append(Statement(formatted_about, True, command_rule))
 
         return ret
 
-    def _process(self, p: Params, res):
-        self.subcmd(self._commands()[p.argv[0]]).execute(p.argv[1:])
+    def _process(self, p: Params):
+        command_dict = _command_map(self._sub_commands())
+        self.call_child_cmd(command_dict[p.argv[0]]).execute(p.argv[1:])
 
-    def _ignoredexceptions(self) -> ():
-        return (PlatformException, KeyError)
+    def _ignored_exceptions(self) -> ():
+        return PlatformException, KeyError
 
     @abstractmethod
     def name(self) -> '':
-        pass
+        return ''
 
     @abstractmethod
-    def _commands(self) -> {}:
-        pass
+    def _about(self) -> []:
+        return ['information']
 
+    @abstractmethod
+    def _sub_commands(self) -> []:
+        return []

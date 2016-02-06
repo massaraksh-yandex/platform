@@ -1,5 +1,6 @@
 import unittest
-from statement.statement import Statement, InfoStatement, empty_command, single_option_command
+from statement.statement import Statement, InfoStatement
+from statement.create import create
 from statement.rule import Rule
 from params.params import Params
 from params.delimiter import SingleDelimiter, DoubleDelimiter
@@ -119,16 +120,16 @@ class TestStatement(unittest.TestCase):
         self.assertEqual(None, InfoStatement('message').attempt(Params(['target', '--flga', '--'])))
 
     def test_empty_command(self):
-        empty_command('message', RESULT)[0].attempt(Params([]))
-        self.assertEqual(None, empty_command('message', RESULT)[0].attempt(Params(['target'])))
-        self.assertEqual(None, empty_command('message', RESULT)[0].attempt(Params(['--flag'])))
-        self.assertEqual(None, empty_command('message', RESULT)[0].attempt(Params(['--'])))
+        create('message').empty_command(RESULT)[0].attempt(Params([]))
+        self.assertEqual(None, create('message').empty_command(RESULT)[0].attempt(Params(['target'])))
+        self.assertEqual(None, create('message').empty_command(RESULT)[0].attempt(Params(['--flag'])))
+        self.assertEqual(None, create('message').empty_command(RESULT)[0].attempt(Params(['--'])))
 
     def test_single_option_command(self):
-        single_option_command('message', RESULT)[0].attempt(Params(['target']))
-        self.assertEqual(None, single_option_command('message', RESULT)[0].attempt(Params([])))
-        self.assertEqual(None, single_option_command('message', RESULT)[0].attempt(Params(['--flag'])))
-        self.assertEqual(None, single_option_command('message', RESULT)[0].attempt(Params(['--'])))
+        create('message').single_option_command(RESULT)[0].attempt(Params(['target']))
+        self.assertEqual(None, create('message').single_option_command(RESULT)[0].attempt(Params([])))
+        self.assertEqual(None, create('message').single_option_command(RESULT)[0].attempt(Params(['--'])))
+        self.assertEqual(None, create('message').single_option_command(RESULT)[0].attempt(Params(['--flag'])))
 
     def test_complex1(self):
         p = Params(['target', '--', '--flag', '--key=value'])
