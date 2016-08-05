@@ -2,7 +2,7 @@ import re
 from collections import namedtuple
 from params.delimiter import SingleDelimiter, DoubleDelimiter
 from params.exception import WrongDelimiters
-from utils.keydefaultdict import keydefaultdict
+from utils.keydefaultdict import KeyDefaultDict
 
 
 Target = namedtuple('Target', ['value', 'index'])
@@ -11,7 +11,7 @@ Target = namedtuple('Target', ['value', 'index'])
 class Params:
     def __init__(self, args):
         self.argv = args
-        self.options = keydefaultdict(lambda x: None)
+        self.options = KeyDefaultDict()
         self.targets = []
         self.delimiters = []
 

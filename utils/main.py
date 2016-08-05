@@ -1,33 +1,25 @@
-from collections import namedtuple
 from os.path import join, pardir, dirname, realpath
-from platform.commands.command import Command
-from platform.utils.utils import importCommands, setupCodecs
+from commands.command import Command
+from db.database import Database
+from utils.utils import _import_commands, _setup_codecs
 import sys
 
 
-ConfigHooks = namedtuple('ConfigHooks', ['checkfiles', 'createfiles', 'saveconfig', 'createdatabase'])
-
-
-def main(name, information, hooks=ConfigHooks(checkfiles=lambda: True,
-                                              createfiles=lambda: None,
-                                              saveconfig=lambda: None,
-                                              createdatabase=lambda: None)):
+def main(name, information, scheme):
     class MainCommand(Command):
-        def __init__(self, name, database):
-            super().__init__(None, database)
-            self._name = name
-            self._realpath = join(__file__, pardir, pardir)
+        def __init__(self):
+            super().__init__(None, Database(scheme))
+
         def name(self):
-            return self._name
-        def _info(self):
+            return name
+
+        def _about(self):
             return information
-        def _commands(self):
-            realPath = dirname(realpath(self._realpath))
-            return importCommands(realPath)
 
-    setupCodecs()
+        def _sub_commands(self):
+            real_path = dirname(realpath(join(__file__, pardir, pardir)))
+            return _import_commands(real_path)
 
-    if not hooks.checkfiles():
-        hooks.createfiles()
-        hooks.saveconfig()
-    MainCommand(name, hooks.createdatabase()).execute(sys.argv[1:])
+    _setup_codecs()
+
+    MainCommand().execute(sys.argv[1:])

@@ -1,6 +1,7 @@
 import json
 import os
 from os.path import expanduser, join
+from params.exception import PlatformException
 
 
 class Scheme:
@@ -51,12 +52,23 @@ class Scheme:
         path = self._object_path(name)
         return open(path, mode)
 
-    def config(self, mode='r'):
+    def config(self):
         if 'config' not in self._objects:
             raise Exception('Cannot find config object')
 
         path = self._object_path('config')
-        return open(path, mode)
+
+        with open(path) as f:
+            return self._objects['config'].load_from(json.load(f))
+
+    def set_config(self, cfg):
+        if 'config' not in self._objects:
+            raise Exception('Cannot find config object')
+
+        path = self._object_path('config')
+
+        with open(path, 'w') as f:
+            f.write(repr(cfg))
 
     def object_type(self, name):
         return self._objects[name]
@@ -79,6 +91,32 @@ class Scheme:
                     json.dump(self._objects[0](), f)
 
 
+class Fake:
+    def __init__(self, config_type):
+        self._config_type = config_type
+
+    def collection(self, obj_type, mode='r'):
+        raise PlatformException('method is not implemented in fake scheme')
+
+    def element(self, obj_type, name, mode='r'):
+        raise PlatformException('method is not implemented in fake scheme')
+
+    def object(self, name, mode='r'):
+        raise PlatformException('method is not implemented in fake scheme')
+
+    def object_type(self, name):
+        raise PlatformException('method is not implemented in fake scheme')
+
+    def check_and_create(self):
+        pass
+
+    def config(self):
+        return self._config_type()
+
+    def set_config(self, cfg):
+        raise PlatformException('method is not implemented in fake scheme')
+
+
 class SchemeFactory:
     def __init__(self, name, configuration_type, home=expanduser('~')):
         self._name = name
@@ -94,5 +132,8 @@ class SchemeFactory:
         self._objects.update({name: obj_type})
         return self
 
-    def product(self):
-        return Scheme(self._name, self._collections, self._objects, self._home)
+    def product(self, fake=False):
+        if fake:
+            return Fake(self._objects['config'])
+        else:
+            return Scheme(self._name, self._collections, self._objects, self._home)

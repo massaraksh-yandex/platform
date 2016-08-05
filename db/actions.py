@@ -23,8 +23,7 @@ class Getter:
             return obj_type.load_from(json.load(f))
 
     def config(self):
-        with self.db.config() as f:
-            return self.db.object_type('config').load_from(json.load(f))
+        return self.db.config()
 
 
 class Updater:
@@ -50,5 +49,4 @@ class Updater:
             f.write(repr(obj))
 
     def config(self, cfg):
-        with self.db.config(mode='w') as f:
-            f.write(repr(cfg))
+        self.db.set_config(cfg)

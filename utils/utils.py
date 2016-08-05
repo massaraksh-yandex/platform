@@ -4,11 +4,11 @@ import sys
 import io
 
 
-def importCommands(path):
-    commandsPath = join(path, 'commands')
-    sys.path.append(commandsPath)
+def _import_commands(path):
+    commands_path = join(path, 'commands')
+    sys.path.append(commands_path)
     commands = {}
-    for name in glob(commandsPath + '/*.py'):
+    for name in glob(commands_path + '/*.py'):
         module = __import__(basename(name[:-3]), globals(), locals())
 
         try:
@@ -20,17 +20,17 @@ def importCommands(path):
     return commands
 
 
-def registerCommands(*commands):
-    return { c.name(c): c for c in commands }
+def register_commands(*commands):
+    return {c.name(c): c for c in commands}
 
 
-def setupCodecs():
+def _setup_codecs():
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', line_buffering = True)
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', line_buffering = True)
     sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
 
 
-def readLineWithPrompt(message, default):
+def read_line_with_prompt(message, default):
     line = input('{0} [{1}]: '.format(message, default)).rstrip()
     if len(line) != 0:
         return line
