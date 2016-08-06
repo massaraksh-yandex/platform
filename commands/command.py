@@ -30,6 +30,7 @@ class Command(BaseCommand):
         return ret
 
     def _process(self, p: Params):
+        self._check_rules(p)
         command_dict = _command_map(self._sub_commands())
         self.call_child_cmd(command_dict[p.argv[0]]).execute(p.argv[1:])
 
@@ -42,7 +43,7 @@ class Command(BaseCommand):
 
     @abstractmethod
     def _about(self) -> []:
-        return ['information']
+        return []
 
     @abstractmethod
     def _sub_commands(self) -> []:

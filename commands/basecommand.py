@@ -20,7 +20,11 @@ class BaseCommand(metaclass=ABCMeta):
 
     def execute(self, argv):
         try:
-            self._execute(argv)
+            p = Params(argv)
+            if self._need_help(p):
+                self._print_help()
+            else:
+                self._process(p)
         except Exception as e:
             if isinstance(e, self._ignored_exceptions()):
                 self._error(e)
@@ -30,20 +34,13 @@ class BaseCommand(metaclass=ABCMeta):
     def call_child_cmd(self, cls):
         return cls(self, self.database)
 
-    def _execute(self, argv):
-        p = Params(argv)
-        if self._need_help(p):
-            self._print_help()
-        else:
-            self._process(p)
-
     def _print_help(self):
         print(self._list_to_message(self._about()))
         print()
         print('Использование:')
 
         for l in self._rules():
-            print(self._list_to_message(l.messages))
+            print(self._list_to_message(l.messages) if isinstance(l.messages, list) else l.messages)
             print()
 
     def _error(self, error):

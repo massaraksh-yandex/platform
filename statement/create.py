@@ -7,11 +7,11 @@ class ExtendedStatementFactory:
         self._array = []
         self.info(messages)
 
-    def statement(self, *messages, result, rule):
+    def statement(self, messages, result, rule):
         self._array.append(Statement(messages, result, rule))
         return self
 
-    def info(self, *messages):
+    def info(self, messages):
         self._array.append(InfoStatement(messages))
         return self
 
@@ -20,7 +20,7 @@ class ExtendedStatementFactory:
 
 
 class StatementFactory:
-    def __init__(self, *messages):
+    def __init__(self, messages):
         self._messages = messages
 
     def extended(self):
@@ -39,5 +39,5 @@ class StatementFactory:
                                                 .empty().targets())]
 
 
-def create(*messages):
-    return StatementFactory(*messages)
+def create(messages):
+    return StatementFactory(messages)
