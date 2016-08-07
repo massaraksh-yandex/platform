@@ -18,7 +18,7 @@ def main(name, information, scheme):
 
         def _sub_commands(self):
             real_path = dirname(realpath(join(__file__, pardir, pardir)))
-            return _import_commands(real_path)
+            return [v for k, v in _import_commands(real_path).items()]
 
     _setup_codecs()
 

@@ -5,7 +5,19 @@ from params.exception import WrongDelimiters
 from utils.keydefaultdict import KeyDefaultDict
 
 
-Target = namedtuple('Target', ['value', 'index'])
+class Target:
+    Empty = -1
+
+    def __init__(self, value='', index=Empty):
+        self.value = value
+        self.index = index
+
+    def __eq__(self, other):
+        ret = self.value == other.value
+        if self.index != Target.Empty and other.index != Target.Empty:
+            ret = ret and self.index == other.index
+        return ret
+
 
 
 class Params:
@@ -46,9 +58,9 @@ class Params:
 
     @staticmethod
     def _create_delimiter(delimiter, index):
-        if delimiter == SingleDelimiter.value:
+        if delimiter == SingleDelimiter.etalon:
             return SingleDelimiter(index)
-        elif delimiter == DoubleDelimiter.value:
+        elif delimiter == DoubleDelimiter.etalon:
             return DoubleDelimiter(index)
         else:
             raise WrongDelimiters('Не могу создать разделитель: {0}, {1}'.format(delimiter, index))

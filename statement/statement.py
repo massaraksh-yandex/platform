@@ -1,27 +1,24 @@
-from params.exception import PlatformException
 from params.params import Params
 
 
 class Statement:
-    def __init__(self, messages, result, rule):
-        self.messages = messages
+    def __init__(self, message, result, rule):
+        self.message = message
         self.result = result
         self.rule = rule
 
     def attempt(self, p: Params):
-        try:
-            self.rule(p)
-        except PlatformException:
-            return None
-        except IndexError:
-            return None
+        ret = self.rule(p)
 
-        return self.result
+        if ret:
+            return self.result
+        else:
+            return None
 
 
 class InfoStatement:
-    def __init__(self, messages):
-        self.messages = messages
+    def __init__(self, message):
+        self.message = message
 
     def attempt(self, p: Params):
         del p

@@ -20,30 +20,29 @@ class BaseCommand(metaclass=ABCMeta):
 
     def execute(self, argv):
         try:
-            self._execute(argv)
-        except Exception as e:
-            if isinstance(e, self._ignored_exceptions()):
-                self._error(e)
+            p = Params(argv)
+            if self._need_help(p):
+                self._print_help()
             else:
-                raise
+                self._process(p)
+        except PlatformException as e:
+            self._error(e)
+        except Exception:
+            raise
 
     def call_child_cmd(self, cls):
         return cls(self, self.database)
 
-    def _execute(self, argv):
-        p = Params(argv)
-        if self._need_help(p):
-            self._print_help()
-        else:
-            self._process(p)
+    def about(self) -> str:
+        return self._format(self._about())
 
     def _print_help(self):
-        print(self._list_to_message(self._about()))
+        print(self.about())
         print()
         print('Использование:')
 
-        for l in self._rules():
-            print(self._list_to_message(l.messages))
+        for info in self._additional_info():
+            print(info)
             print()
 
     def _error(self, error):
@@ -67,19 +66,17 @@ class BaseCommand(metaclass=ABCMeta):
         else:
             raise PlatformException('Аргументы подходят под несколько правил программы')
 
-    def _list_to_message(self, lst: list):
-        msg = dict(path=colored(self.path(), Color.green, Style.underline),
-                   name=self.name(),
-                   space='\t')
-        return '\n'.join(lst).format(**msg)
+    def _format(self, message: str):
+        return message.format(path=colored(self.path(), Color.green, Style.underline),
+                              name=self.name(), space='\t')
 
     @abstractmethod
     def name(self) -> '':
         return ''
 
     @abstractmethod
-    def _about(self) -> []:
-        return ['information']
+    def _about(self) -> str:
+        return 'information'
 
     @abstractmethod
     def _process(self, p: Params):
@@ -90,8 +87,8 @@ class BaseCommand(metaclass=ABCMeta):
         return []
 
     @abstractmethod
-    def _ignored_exceptions(self) -> ():
-        return ()
+    def _additional_info(self) -> []:
+        return []
 
     @abstractmethod
     def _need_help(self, p: Params):

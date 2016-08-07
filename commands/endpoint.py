@@ -1,6 +1,5 @@
 from abc import abstractmethod
 from commands.basecommand import BaseCommand
-from params.exception import PlatformException
 from params.params import Params
 
 
@@ -12,15 +11,15 @@ class Endpoint(BaseCommand):
         res = self._check_rules(p)
         res(p)
 
-    def _ignored_exceptions(self) -> ():
-        return PlatformException
+    def _additional_info(self) -> []:
+        return [self._format(r.message) for r in self._rules()]
 
     @abstractmethod
     def name(self) -> '':
         pass
 
     @abstractmethod
-    def _about(self) -> []:
+    def _about(self) -> str:
         pass
 
     @abstractmethod

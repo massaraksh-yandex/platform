@@ -3,7 +3,7 @@ from commands.command import Command
 from commands.endpoint import Endpoint
 from params.params import Params
 from statement.create import create
-from statement.rule import Rule
+from statement.rule import Rule, Data, Op
 
 
 class MethodWasCalled(Exception):
@@ -11,11 +11,11 @@ class MethodWasCalled(Exception):
 
 
 _help = {
-    'first': ['first.help'],
-    'second': ['second.help'],
-    'third': ['third.help'],
-    'scope': ['scope.help', 'second line'],
-    'root': ['root.help']
+    'first': 'first.help',
+    'second': 'second.help',
+    'third': 'third.help',
+    'scope': 'scope.help\nsecond line',
+    'root': 'root.help'
 }
 
 
@@ -34,7 +34,7 @@ class First(Endpoint):
         return _help[self.name()]
 
     def _rules(self):
-        return create('first info line',
+        return create('first info line\n' +
                       'second info line').empty_command(self.hook)
 
     def hook(self, p: Params):
@@ -65,15 +65,14 @@ class Third(Endpoint):
     def _rules(self):
         return create('extended rule').extended()\
             .statement('flag', result=self.hook,
-                       rule=lambda p: Rule(p).empty().delimiters()
-                                             .empty().targets()
-                                             .check().option_names_in_set('flag')
-                                             .check().option_value_in_set('flag', None))\
-            .info('second info message', 'multiline')\
+                       rule=Rule().empty(Data.Delimiter)
+                                  .empty(Data.Target)
+                                  .option('flag'))\
+            .info('second info message\nmultiline')\
             .statement('target', result=self.another_hook,
-                       rule=lambda p: Rule(p).empty().delimiters()
-                                             .empty().options()
-                                             .size().equals(p.targets, 1))\
+                       rule=Rule().empty(Data.Delimiter)
+                                  .empty(Data.Option)
+                                  .size(Data.Target, Op.eq(1)))\
             .product()
 
     def hook(self, p: Params):
@@ -110,6 +109,7 @@ class TestCommands(unittest.TestCase):
         self.root = Root(None, None)
 
         self.cases = [
+            ('', ''),
             ('first', 'First.hook'),
             ('scope second target', 'Second.hook'),
             ('scope third target', 'Third.another_hook'),
@@ -132,5 +132,12 @@ class TestCommands(unittest.TestCase):
             root.execute(args.split(' '))
             self.assertEqual(db.val, case[1])
 
-if __name__ == '__main__':
-    unittest.main()
+    def test_path(self):
+        db = Db()
+        root = Root(None, db)
+
+        self.assertEqual(root.path(), 'root')
+        self.assertEqual(root.call_child_cmd(First).path(), 'root first')
+        self.assertEqual(root.call_child_cmd(Scope).path(), 'root scope')
+        self.assertEqual(root.call_child_cmd(Scope).call_child_cmd(Second).path(separator='.'), 'root.scope.second')
+        self.assertEqual(root.call_child_cmd(Scope).call_child_cmd(Third).path(separator='-'), 'root-scope-third')

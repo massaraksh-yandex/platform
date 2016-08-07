@@ -79,7 +79,7 @@ class Scheme:
 
         for f in folders:
             if not os.path.exists(f):
-                os.mkdir(f)
+                os.makedirs(f, exist_ok=True)
             elif not os.path.isdir(f):
                 raise Exception('Object "{}" must be a folder'.format(f))
 

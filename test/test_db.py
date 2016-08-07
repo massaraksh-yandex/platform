@@ -182,7 +182,3 @@ class TestUpdater(unittest.TestCase):
             new_el = new_col[name]
             self.assertEqual(old_el.x, new_el.x)
             self.assertEqual(old_el.y, new_el.y)
-
-
-if __name__ == '__main__':
-    unittest.main()

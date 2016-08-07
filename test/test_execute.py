@@ -46,6 +46,18 @@ class TestRun(unittest.TestCase):
             self.assertEqual(p.out, case['out'])
             self.assertEqual(p.err, case['err'])
 
+    def test_with_path(self):
+        p = Run().path('/home').cmd(['pwd'])
+        p.call()
+        self.assertEqual(p.out, '/home\n')
+        self.assertEqual(p.err, '')
 
-if __name__ == '__main__':
-    unittest.main()
+    def test_with_sleep(self):
+        p = Run().path('/home').cmd(['pwd', '&&', 'sleep', '1', '&&', 'pwd', ';', 'ls', '/asdf'])
+        for line in p.exec():
+            self.assertEqual(line, '/home\n')
+
+        self.assertEqual(p.out, '/home\n/home\n')
+        self.assertEqual(p.err, 'ls: /asdf: No such file or directory\n')
+        self.assertEqual(p.code, 1)
+

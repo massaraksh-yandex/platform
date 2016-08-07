@@ -1,9 +1,11 @@
 from subprocess import STDOUT, PIPE
-from execute.ssh import Ssh
+
+from color.color import colored, Color
+from execute.local import Local
 
 
-class Run(object):
-    def __init__(self, impl=Ssh('localhost')):
+class Run:
+    def __init__(self, impl=Local()):
         self._args = []
         self._stderr = PIPE
         self._path = '.'
@@ -35,12 +37,21 @@ class Run(object):
         self._collect_data(p)
         return self.out
 
+    def run(self):
+        p = self._impl.cmd(self._stderr, self._path, self._args)
+        self._collect_data(p)
+        if self.code:
+            raise Exception(colored(self.err, Color.red))
+        return self
+
     def exec(self):
-        p = self._impl.cmd(self._stderr,self._path, self._args)
+        p = self._impl.cmd(self._stderr, self._path, self._args)
         while True:
             line = p.stdout.readline().decode('utf-8')
             if line == '' and p.poll() is not None:
                 break
+            self.out += line
             yield line
 
-        self._collect_data(p)
+        self.err = '\n'.join([l.decode('utf-8') for l in p.stderr.readlines()])
+        self.code = p.returncode

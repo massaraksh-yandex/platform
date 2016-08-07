@@ -151,7 +151,3 @@ class TestComplex(unittest.TestCase):
 
     def test_separated(self):
         self.assertListEqual(self.p.separated, self.expected['separated'])
-
-
-if __name__ == '__main__':
-    unittest.main()
