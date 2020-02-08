@@ -51,6 +51,8 @@ class BaseCommand(metaclass=ABCMeta):
         if message != '':
             print(colored(message, Color.red))
         self._printHelp()
+        import traceback
+        traceback.print_exc()
 
     def _checkselectedrule(self, ruleset: set, p: Params):
         l = len(ruleset)

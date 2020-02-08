@@ -20,10 +20,13 @@ def main(name, information, hooks = ConfigHooks(checkfiles=lambda: True,
             super().__init__(None, database)
             self._name = name
             self._realpath = join(__file__, pardir, pardir)
+
         def name(self):
             return self._name
+
         def _info(self):
             return information
+
         def _commands(self):
             realPath = dirname(realpath(self._realpath))
             return importCommands(realPath)

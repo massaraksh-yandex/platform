@@ -23,8 +23,11 @@ class run(object):
         self._path = p
         return self
 
-    def call(self):
-        return self._impl.cmd(self._stderr, self._host, self._path, self._args).communicate()[0].decode('utf-8')
+    def call(self, p=False):
+        s = self._impl.cmd(self._stderr, self._host, self._path, self._args).communicate()[0].decode('utf-8')
+        if p:
+            print(s)
+        return s
 
     def exec(self):
         p = self._impl.cmd(self._stderr, self._host, self._path, self._args)

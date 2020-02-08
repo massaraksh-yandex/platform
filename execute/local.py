@@ -10,4 +10,6 @@ class local(object):
 
     def cmd(self, err, host, path, args):
         shell = not isinstance(args, list)
-        return Popen(self._formparams(shell, path, args), stdout=PIPE, stderr=err, shell=shell, bufsize=0)
+        p = self._formparams(shell, path, args)
+        print(str(p))
+        return Popen(p, stdout=PIPE, stderr=err, shell=shell, bufsize=0)
