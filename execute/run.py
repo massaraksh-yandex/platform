@@ -23,10 +23,13 @@ class run(object):
         self._path = p
         return self
 
-    def call(self, p=False):
-        s = self._impl.cmd(self._stderr, self._host, self._path, self._args).communicate()[0].decode('utf-8')
+    def call(self, p=False, throw=False):
+        pid = self._impl.cmd(self._stderr, self._host, self._path, self._args)
+        s = pid.communicate()[0].decode('utf-8')
         if p:
             print(s)
+        if throw and pid.returncode != 0:
+            raise Exception(str(self._args))
         return s
 
     def exec(self):
